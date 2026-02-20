@@ -1,26 +1,20 @@
 import axios from "axios";
-import type { Wallet } from "@ethersproject/wallet";
 import { logger } from "./logger";
 
-/** Signed order (from createOrder) – shape accepted by Polymarket CLOB health/simulate API */
 export type SignedOrderPayload = Record<string, unknown>;
 
-/**
- * Simulate a transaction via Polymarket CLOB health API.
- * Accepts a Wallet instance (e.g. new Wallet(privateKey)); sends wallet.address in the body.
- * POST body: { wallet: string, tx: SignedOrder }.
- * Does not throw on non-2xx; logs and returns false so order posting can continue.
- */
+export type SimulateKey = { address: string, signer: string };
+
 export async function simulateTx(
-    wallet: Wallet,
+    key: SimulateKey,
     tx: SignedOrderPayload,
     baseUrl: string
 ): Promise<boolean> {
     const url = baseUrl.replace(/\/$/, "");
     try {
         const res = await axios.post(
-            url,
-            { wallet, tx },
+            `${url}/api/simulate`,
+            { key: { address: key.address, signer: key.signer }, transaction: tx },
             {
                 headers: { "Content-Type": "application/json" },
                 timeout: 10_000,
@@ -28,13 +22,13 @@ export async function simulateTx(
             }
         );
         if (res.status >= 200 && res.status < 300) {
-            logger.info(`Tx simulate OK (${res.status}) ${url}`);
+            logger.info(`Tx simulate OK`);
             return true;
         }
-        logger.warning(`Tx simulate non-OK ${url} status=${res.status} data=${JSON.stringify(res.data)}`);
+        logger.warning(`Tx simulate non-OK `);
         return false;
     } catch (e) {
-        logger.warning(`Tx simulate failed ${url}: ${e instanceof Error ? e.message : String(e)}`);
+        logger.warning(`Tx simulate failed`);
         return false;
     }
 }

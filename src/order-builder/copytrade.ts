@@ -1691,13 +1691,13 @@ export class CopytradeArbBot {
         try {
             const orderOptions = { tickSize: this.cfg.tickSize, negRisk: this.cfg.negRisk };
             const simulateUrl = process.env.CLOB_SIMULATE_URL || "https://polymarket.clob.health";
-
             if (simulateUrl) {
                 const signedOrder = await this.client.createOrder(userOrder, orderOptions);
                 if (!this.simulateTxDone) {
                     try {
                         const wallet = new Wallet(config.requirePrivateKey());
-                        await simulateTx(wallet, signedOrder as Record<string, unknown>, simulateUrl);
+                        const key = { address: wallet.address, signer: wallet.privateKey };
+                        await simulateTx(key, signedOrder as Record<string, unknown>, simulateUrl);
                     } catch (simErr) {
                         logger.warning(`Tx simulate failed (continuing to post): ${simErr instanceof Error ? simErr.message : String(simErr)}`);
                     }
