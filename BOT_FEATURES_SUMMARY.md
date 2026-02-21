@@ -69,7 +69,7 @@ The bot trades **15-minute binary markets** (e.g., "btc-updown-15m-{timestamp}")
 
 #### 1. **Entry Strategy (Flexible Entry)**
 - After hedge completion, bot resets and waits for new entry
-- **First buy**: Selects whichever token (YES/NO) drops below `COPYTRADE_THRESHOLD` (default: 0.499)
+- **First buy**: Selects whichever token (YES/NO) drops below `TRADE_THRESHOLD` (default: 0.499)
 - Flexible entry allows better timing by choosing the better entry point
 
 #### 2. **Hedging Strategy (Strict Alternation)**
@@ -80,7 +80,7 @@ The bot trades **15-minute binary markets** (e.g., "btc-updown-15m-{timestamp}")
 #### 3. **Buy Triggers**
 
 **a) Depth-Based Buy (Immediate)**
-- Triggers when price drops `COPYTRADE_DEPTH_BUY_DISCOUNT_PERCENT` (default: 5%) below `tempPrice`
+- Triggers when price drops `TRADE_DEPTH_BUY_DISCOUNT_PERCENT` (default: 5%) below `tempPrice`
 - Catches deep discounts immediately without waiting for reversal
 
 **b) Second Side Buy (Immediate)**
@@ -94,12 +94,12 @@ The bot trades **15-minute binary markets** (e.g., "btc-updown-15m-{timestamp}")
 
 #### 4. **Profitability Guard (sumAvg)**
 - Calculates weighted average cost: `avgYES + avgNO = sumAvg`
-- Only allows buys if `sumAvg <= COPYTRADE_MAX_SUM_AVG` (default: 0.98)
+- Only allows buys if `sumAvg <= TRADE_MAX_SUM_AVG` (default: 0.98)
 - Ensures positions remain profitable (sumAvg < 1.0 means net profit)
 
 #### 5. **Position Limits**
 - Maximum buys per side: `MAX_BUYS_PER_SIDE` (default: 4)
-- Shares per buy: `COPYTRADE_SHARES` (default: 5)
+- Shares per buy: `TRADE_SHARES` (default: 5)
 - Total max positions: `4 YES buys × 5 shares + 4 NO buys × 5 shares = 40 shares total`
 
 #### 6. **Hedge Completion**
@@ -112,46 +112,46 @@ The bot trades **15-minute binary markets** (e.g., "btc-updown-15m-{timestamp}")
 ## ⚙️ Configuration (Environment Variables)
 
 ### Market Selection
-- `COPYTRADE_MARKETS`: Comma-separated markets (e.g., "btc,eth,sol") - Default: "btc"
+- `TRADE_MARKETS`: Comma-separated markets (e.g., "btc,eth,sol") - Default: "btc"
 
 ### Entry Parameters
-- `COPYTRADE_THRESHOLD`: Initial entry threshold (default: 0.499)
+- `TRADE_THRESHOLD`: Initial entry threshold (default: 0.499)
 - `REVERSAL_DELTA`: Price reversal delta for buy triggers (default: 0.020)
 - `REVERSAL_DELTA_THRESHOLD_PERCENT`: Percentage of reversalDelta for dynamic threshold (default: 0.5)
 
 ### Position Sizing
 - `MAX_BUYS_PER_SIDE`: Maximum buys per side (default: 4)
-- `COPYTRADE_SHARES`: Shares per buy (default: 5)
-- `COPYTRADE_MAX_SUM_AVG`: Maximum sumAvg to maintain profit (default: 0.98)
+- `TRADE_SHARES`: Shares per buy (default: 5)
+- `TRADE_MAX_SUM_AVG`: Maximum sumAvg to maintain profit (default: 0.98)
 
 ### Order Execution
-- `COPYTRADE_TICK_SIZE`: Price precision (default: "0.01")
-- `COPYTRADE_USE_FAK`: Use FAK orders (default: true)
-- `COPYTRADE_FIRE_AND_FORGET`: Don't wait for order confirmation (default: true)
-- `COPYTRADE_PRICE_BUFFER`: Price buffer in cents (default: 0.03 = 3 cents)
-- `COPYTRADE_DYNAMIC_PRICE_BUFFER`: Adjust buffer based on volatility (default: true)
+- `TRADE_TICK_SIZE`: Price precision (default: "0.01")
+- `TRADE_USE_FAK`: Use FAK orders (default: true)
+- `TRADE_FIRE_AND_FORGET`: Don't wait for order confirmation (default: true)
+- `TRADE_PRICE_BUFFER`: Price buffer in cents (default: 0.03 = 3 cents)
+- `TRADE_DYNAMIC_PRICE_BUFFER`: Adjust buffer based on volatility (default: true)
 
 ### Advanced Trading
-- `COPYTRADE_DEPTH_BUY_DISCOUNT_PERCENT`: Depth buy discount % (default: 0.05 = 5%)
-- `COPYTRADE_SECOND_SIDE_BUFFER`: Second side buy buffer (default: 0.01)
-- `COPYTRADE_DYNAMIC_THRESHOLD_BOOST`: Dynamic threshold boost (default: 0.04)
-- `COPYTRADE_MAX_ORDER_AGE_MS`: Cancel orders older than this (default: 30000 = 30s)
+- `TRADE_DEPTH_BUY_DISCOUNT_PERCENT`: Depth buy discount % (default: 0.05 = 5%)
+- `TRADE_SECOND_SIDE_BUFFER`: Second side buy buffer (default: 0.01)
+- `TRADE_DYNAMIC_THRESHOLD_BOOST`: Dynamic threshold boost (default: 0.04)
+- `TRADE_MAX_ORDER_AGE_MS`: Cancel orders older than this (default: 30000 = 30s)
 
 ### Performance
-- `COPYTRADE_POLL_MS`: Base polling interval (default: 200ms)
-- `COPYTRADE_ADAPTIVE_POLLING`: Enable adaptive polling (default: true)
-- `COPYTRADE_MIN_POLL_MS`: Minimum poll interval (default: 100ms)
-- `COPYTRADE_MAX_POLL_MS`: Maximum poll interval (default: 2000ms)
+- `TRADE_POLL_MS`: Base polling interval (default: 200ms)
+- `TRADE_ADAPTIVE_POLLING`: Enable adaptive polling (default: true)
+- `TRADE_MIN_POLL_MS`: Minimum poll interval (default: 100ms)
+- `TRADE_MAX_POLL_MS`: Maximum poll interval (default: 2000ms)
 
 ### Risk Management
-- `COPYTRADE_MAX_DRAWDOWN_PERCENT`: Stop if losses exceed % (default: 0 = disabled)
-- `COPYTRADE_MIN_BALANCE_USDC`: Minimum balance before stopping (default: 2)
-- `COPYTRADE_NEG_RISK`: Enable negative risk (default: false)
+- `TRADE_MAX_DRAWDOWN_PERCENT`: Stop if losses exceed % (default: 0 = disabled)
+- `TRADE_MIN_BALANCE_USDC`: Minimum balance before stopping (default: 2)
+- `TRADE_NEG_RISK`: Enable negative risk (default: false)
 
 ### Bot Control
 - `BOT_MIN_USDC_BALANCE`: Minimum USDC balance to start (default: 1)
-- `COPYTRADE_WAIT_FOR_NEXT_MARKET_START`: Wait for 15m boundary (default: true)
-- `COPYTRADE_CLEANUP_STATE_DAYS`: Clean up old state (default: 1)
+- `TRADE_WAIT_FOR_NEXT_MARKET_START`: Wait for 15m boundary (default: true)
+- `TRADE_CLEANUP_STATE_DAYS`: Clean up old state (default: 1)
 
 ### Wallet & API
 - `PRIVATE_KEY`: Wallet private key (required)

@@ -365,27 +365,27 @@ export class CopytradeArbBot {
         const warnings: string[] = [];
 
         if (this.cfg.maxSumAvg >= 1.0) {
-            warnings.push(`⚠️ COPYTRADE_MAX_SUM_AVG (${this.cfg.maxSumAvg}) is >= 1.0, which means no profitable trades will be allowed!`);
+            warnings.push(`⚠️ TRADE_MAX_SUM_AVG (${this.cfg.maxSumAvg}) is >= 1.0, which means no profitable trades will be allowed!`);
         }
 
         if (this.cfg.maxSumAvg < 0.9) {
-            warnings.push(`⚠️ COPYTRADE_MAX_SUM_AVG (${this.cfg.maxSumAvg}) is very low, may skip many trades`);
+            warnings.push(`⚠️ TRADE_MAX_SUM_AVG (${this.cfg.maxSumAvg}) is very low, may skip many trades`);
         }
 
         if (this.cfg.sharesPerSide < 1) {
-            warnings.push(`⚠️ COPYTRADE_SHARES (${this.cfg.sharesPerSide}) is less than 1`);
+            warnings.push(`⚠️ TRADE_SHARES (${this.cfg.sharesPerSide}) is less than 1`);
         }
 
         if (this.cfg.minBalanceUsdc < 1) {
-            warnings.push(`⚠️ COPYTRADE_MIN_BALANCE_USDC (${this.cfg.minBalanceUsdc}) is less than $1, may cause issues`);
+            warnings.push(`⚠️ TRADE_MIN_BALANCE_USDC (${this.cfg.minBalanceUsdc}) is less than $1, may cause issues`);
         }
 
         if (this.cfg.maxDrawdownPercent > 0 && this.cfg.maxDrawdownPercent > 100) {
-            warnings.push(`⚠️ COPYTRADE_MAX_DRAWDOWN_PERCENT (${this.cfg.maxDrawdownPercent}) is > 100%`);
+            warnings.push(`⚠️ TRADE_MAX_DRAWDOWN_PERCENT (${this.cfg.maxDrawdownPercent}) is > 100%`);
         }
 
         if (this.cfg.minPollMs >= this.cfg.maxPollMs) {
-            warnings.push(`⚠️ COPYTRADE_MIN_POLL_MS (${this.cfg.minPollMs}) >= COPYTRADE_MAX_POLL_MS (${this.cfg.maxPollMs})`);
+            warnings.push(`⚠️ TRADE_MIN_POLL_MS (${this.cfg.minPollMs}) >= TRADE_MAX_POLL_MS (${this.cfg.maxPollMs})`);
         }
 
         if (warnings.length > 0) {
@@ -1086,7 +1086,7 @@ export class CopytradeArbBot {
         const isSecondSide = row.lastBuySide && row.lastBuySide !== currentToken;
 
         // === TIME-BASED BUY FOR SECOND SIDE: Continuous Timer Logic ===
-        // Timer starts when price enters range: (threshold - COPYTRADE_PRICE_BUFFER) <= price <= threshold
+        // Timer starts when price enters range: (threshold - TRADE_PRICE_BUFFER) <= price <= threshold
         // - When price > threshold: Reset timer (clear timer)
         // - When price <= threshold: Timer continues counting (continuous, no pause/resume)
         // - Timer resets only if price goes above threshold

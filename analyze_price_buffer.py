@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Analyze price logs to determine ideal COPYTRADE_PRICE_BUFFER value.
+Analyze price logs to determine ideal TRADE_PRICE_BUFFER value.
 
 This script analyzes historical price movements to recommend an optimal buffer
 value for the time-based second side buy trigger.
@@ -227,7 +227,7 @@ def main():
     print("RECOMMENDATION")
     print("="*60)
     recommended = recommend_buffer(movements_stats, range_stats)
-    print(f"\nRecommended COPYTRADE_PRICE_BUFFER: {recommended:.2f}")
+    print(f"\nRecommended TRADE_PRICE_BUFFER: {recommended:.2f}")
     print(f"\nThis value:")
     print(f"  - Captures ~75% of typical price movements")
     print(f"  - Provides a reasonable range for time-based triggers")

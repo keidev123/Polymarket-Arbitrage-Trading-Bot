@@ -57,9 +57,9 @@ cp .env.example .env
 ```env
 PRIVATE_KEY=your_polygon_wallet_private_key
 
-COPYTRADE_MARKETS=btc
-COPYTRADE_THRESHOLD=0.47
-COPYTRADE_SHARES=5
+TRADE_MARKETS=btc
+TRADE_THRESHOLD=0.47
+TRADE_SHARES=5
 MAX_BUYS_PER_SIDE=1
 ```
 
@@ -82,41 +82,41 @@ The bot will:
 | Variable | Default | Description |
 |---|---|---|
 | `PRIVATE_KEY` | *required* | Polygon wallet private key |
-| `COPYTRADE_MARKETS` | `btc` | Markets to trade (comma-separated: `btc,eth,sol,xrp`) |
-| `COPYTRADE_THRESHOLD` | `0.47` | Entry price — buy when a token drops below this |
-| `COPYTRADE_SHARES` | `5` | Number of shares per buy |
+| `TRADE_MARKETS` | `btc` | Markets to trade (comma-separated: `btc,eth,sol,xrp`) |
+| `TRADE_THRESHOLD` | `0.47` | Entry price — buy when a token drops below this |
+| `TRADE_SHARES` | `5` | Number of shares per buy |
 | `MAX_BUYS_PER_SIDE` | `1` | Maximum buys per side per 15m cycle |
-| `COPYTRADE_MAX_SUM_AVG` | `0.99` | Max combined avg price (above this = no profit) |
-| `COPYTRADE_TICK_SIZE` | `0.01` | Price precision for orders |
+| `TRADE_MAX_SUM_AVG` | `0.99` | Max combined avg price (above this = no profit) |
+| `TRADE_TICK_SIZE` | `0.01` | Price precision for orders |
 
 ### Speed Tuning
 
 | Variable | Default | Description |
 |---|---|---|
-| `COPYTRADE_POLL_MS` | `50` | Main loop interval (milliseconds) |
-| `COPYTRADE_MIN_POLL_MS` | `100` | Fastest adaptive poll rate |
-| `COPYTRADE_MAX_POLL_MS` | `2000` | Slowest adaptive poll rate |
-| `COPYTRADE_FIRE_AND_FORGET` | `true` | Place orders without waiting for confirmation |
-| `COPYTRADE_PRICE_BUFFER` | `0.05` | Cents above midpoint to ensure fill |
-| `COPYTRADE_USE_FAK` | `true` | Fill-and-Kill orders for instant execution |
+| `TRADE_POLL_MS` | `50` | Main loop interval (milliseconds) |
+| `TRADE_MIN_POLL_MS` | `100` | Fastest adaptive poll rate |
+| `TRADE_MAX_POLL_MS` | `2000` | Slowest adaptive poll rate |
+| `TRADE_FIRE_AND_FORGET` | `true` | Place orders without waiting for confirmation |
+| `TRADE_PRICE_BUFFER` | `0.05` | Cents above midpoint to ensure fill |
+| `TRADE_USE_FAK` | `true` | Fill-and-Kill orders for instant execution |
 
 ### Entry Triggers
 
 | Variable | Default | Description |
 |---|---|---|
 | `REVERSAL_DELTA` | `0.02` | Price bounce from bottom to trigger buy |
-| `COPYTRADE_DEPTH_BUY_DISCOUNT_PERCENT` | `0.02` | Buy if price drops this % below tracked low |
-| `COPYTRADE_SECOND_SIDE_BUFFER` | `0.003` | Buffer for opposite side entry |
-| `COPYTRADE_DYNAMIC_THRESHOLD_BOOST` | `0.04` | Extra cents added to second-side threshold |
+| `TRADE_DEPTH_BUY_DISCOUNT_PERCENT` | `0.02` | Buy if price drops this % below tracked low |
+| `TRADE_SECOND_SIDE_BUFFER` | `0.003` | Buffer for opposite side entry |
+| `TRADE_DYNAMIC_THRESHOLD_BOOST` | `0.04` | Extra cents added to second-side threshold |
 
 ### Timing
 
 | Variable | Default | Description |
 |---|---|---|
-| `COPYTRADE_WAIT_FOR_NEXT_MARKET_START` | `false` | Wait for next 15m boundary before starting |
-| `COPYTRADE_ORDER_CHECK_DELAY_MS` | `100` | Delay before first order status check |
-| `COPYTRADE_ORDER_RETRY_DELAY_MS` | `300` | Delay between order status retries |
-| `COPYTRADE_ORDER_MAX_ATTEMPTS` | `2` | Max retries for order confirmation |
+| `TRADE_WAIT_FOR_NEXT_MARKET_START` | `false` | Wait for next 15m boundary before starting |
+| `TRADE_ORDER_CHECK_DELAY_MS` | `100` | Delay before first order status check |
+| `TRADE_ORDER_RETRY_DELAY_MS` | `300` | Delay between order status retries |
+| `TRADE_ORDER_MAX_ATTEMPTS` | `2` | Max retries for order confirmation |
 
 ## Trading Logic
 
@@ -170,7 +170,7 @@ This ensures the combined cost stays well below $1.00.
 Before every buy, the bot checks:
 
 ```
-avgPriceYES + avgPriceNO < COPYTRADE_MAX_SUM_AVG ($0.99)
+avgPriceYES + avgPriceNO < TRADE_MAX_SUM_AVG ($0.99)
 ```
 
 If the combined average would exceed $0.99, the buy is skipped — there's no profit margin left.
