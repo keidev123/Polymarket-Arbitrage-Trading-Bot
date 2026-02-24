@@ -1,4 +1,4 @@
-# Polymarket Hedged Arbitrage Bot
+# Polymarket Arbitrage Bot
 
 Fully automated arbitrage bot that captures guaranteed profit from Polymarket's 15-minute Up/Down prediction markets. It buys both YES and NO sides at a combined cost below $1.00, then collects $1.00 when the market resolves — pocketing the spread every 15 minutes.
 
