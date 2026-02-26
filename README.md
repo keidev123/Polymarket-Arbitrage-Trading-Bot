@@ -1,4 +1,6 @@
-# Polymarket Arbitrage Bot
+# Polymarket Arbitrage Bot (BTC / ETH / SOL Price Market Arbitrage Bot)
+
+![Polymarket Arbitrage Bot Banner](image/banner.jpg)
 
 Fully automated arbitrage bot that captures guaranteed profit from Polymarket's 15-minute Up/Down prediction markets. It buys both YES and NO sides at a combined cost below $1.00, then collects $1.00 when the market resolves — pocketing the spread every 15 minutes.
 
@@ -18,6 +20,10 @@ Profit = $5.00 − $4.70 = $0.30 per cycle (6.4% return in 15 min)
 ```
 
 The bot runs 24/7, executing this strategy every 15 minutes across multiple markets (BTC, ETH, SOL, XRP).
+
+## Supported Markets
+
+This version of the bot is configured for **BTC, ETH, and SOL** 15-minute Up/Down markets on Polymarket.
 
 ## Features
 
@@ -57,7 +63,7 @@ cp .env.example .env
 ```env
 PRIVATE_KEY=your_polygon_wallet_private_key
 
-TRADE_MARKETS=btc
+TRADE_MARKETS=btc,eth,sol
 TRADE_THRESHOLD=0.47
 TRADE_SHARES=5
 MAX_BUYS_PER_SIDE=1
@@ -82,7 +88,7 @@ The bot will:
 | Variable | Default | Description |
 |---|---|---|
 | `PRIVATE_KEY` | *required* | Polygon wallet private key |
-| `TRADE_MARKETS` | `btc` | Markets to trade (comma-separated: `btc,eth,sol,xrp`) |
+| `TRADE_MARKETS` | `btc,eth,sol` | Markets to trade (comma-separated: `btc,eth,sol`) |
 | `TRADE_THRESHOLD` | `0.47` | Entry price — buy when a token drops below this |
 | `TRADE_SHARES` | `5` | Number of shares per buy |
 | `MAX_BUYS_PER_SIDE` | `1` | Maximum buys per side per 15m cycle |
@@ -218,6 +224,12 @@ The bot logs every action to both console and daily log files in `logs/`:
 [OK]    btc | Bought 5 YES @ $0.50 — HEDGE COMPLETE
 [INFO]  btc | Cost: $0.96/share — Guaranteed profit: $0.04 × 5 = $0.20
 ```
+
+## Arbitrage Results
+
+Sample arbitrage outcome from a live trading cycle:
+
+![Arbitrage Result](image/result.png)
 
 ## Scripts
 
